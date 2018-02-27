@@ -8,8 +8,6 @@
  * @subpackage ${NAME}
  * @author     johangriesel <info@stratusolve.com>
  */
- var $json_data = file_get_contents('Task_Data.txt');
- json_decode($json_data, true);
 ?>
 <!DOCTYPE html>
 <html>
@@ -25,7 +23,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Task Manager</h4>
+                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
             </div>
             <div class="modal-body">
                 <form action="update_task.php" method="post">
@@ -62,10 +60,8 @@
             </button>
             <div id="TaskList" class="list-group">
                 <!-- Assignment: These are simply dummy tasks to show how it should look and work. You need to dynamically update this list with actual tasks -->
-                <iframe src="Task_Data.txt">
-                  <p>Your browser does not support iframes.</p>
-                </iframe>
-
+                
+                <?php echo $taskArray ?>
             </div>
         </div>
         <div class="col-md-3">
@@ -82,13 +78,12 @@
     {
         var triggerElement = $(event.relatedTarget); // Element that triggered the modal
         var modal = $(this);
-        if (triggerElement.attr("id") == 'newTask') {
-            modal.find('.modal-title').text('Task Manager');
+        if (triggerElement.attr("id") == 'newTask')
+        {
+            modal.find('.modal-title').text('New Task');
             $('#deleteTask').hide();
             currentTaskId = -1;
-        }
-        else
-        {
+        } else {
             modal.find('.modal-title').text('Task details');
             $('#deleteTask').show();
             currentTaskId = triggerElement.attr("id");
@@ -98,22 +93,19 @@
     $('#saveTask').click(function()
     {
         //Assignment: Implement this functionality
-        $.POST("Tasks.class.php", function(Save()));
-        }
-        alert('Save... Id:'+currentTaskId);
+        alert('Save... Id: '+currentTaskId);
         $('#myModal').modal('hide');
         updateTaskList();
     });
     $('#deleteTask').click(function()
     {
         //Assignment: Implement this functionality
-        $.POST("Task.class.php", function(Delete()));
-      }
-        alert('Delete... Id:'+currentTaskId);
+        alert('Delete... Id: '+currentTaskId);
         $('#myModal').modal('hide');
         updateTaskList();
     });
-    function updateTaskList() {
+    function updateTaskList()
+    {
         $.post("list_tasks.php", function( data )
         {
             $( "#TaskList" ).html( data );

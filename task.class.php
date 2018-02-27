@@ -22,27 +22,39 @@ class Task
         if (!$this->LoadFromId($Id))
             $this->Create();
     }
+
     protected function Create()
-     {
+    {
         // This function needs to generate a new unique ID for the task
         // Assignment: Generate unique id for the new task
         $this->TaskId = $this->getUniqueId();
         $this->TaskName = 'New Task';
         $this->TaskDescription = 'New Description';
     }
+
     protected function getUniqueId()
     {
         // Assignment: Code to get new unique ID
-        uniqid($TaskId, true);
+        $txtFile = file_get_contents("Task_Data.txt");
+        $JSONdata = json_decode($txtFile, true);
+
+        //Getting the last ID number in updateTaskList
+        $last_item = end($JSONdata);
+        $last_item_id = $last_item['TaskId'];
+
+        $JSONdata[] = array('TaskId' => ++$last_item_id);
+
+        return TaskId;
+
         //return -1; // Placeholder return for now
     }
+
     protected function LoadFromId($Id = null)
     {
         if ($Id)
         {
             // Assignment: Code to load details here...
-            $task = file_get_contents('Task_Data.txt');
-            echo $task;
+
         }
         else
         {
@@ -52,36 +64,22 @@ class Task
 
     public function Save()
     {
-      $TaskId=$this->getUniqueId();
-      $taskName=getElementById('InputTaskName');
-      $taskDescription=getElementById('InputTaskDescription');
         //Assignment: Code to save task here
-          $file=fopen("Task_Data.txt", "a") or exit("Unable to open file");  //Open text file var fp
-          fwrite($file, "TaskId:", $TaskId, "TaskName:", $taskName, "TaskDescription:", $taskDescription ); //Write to text file with name and description
-          fclose($file);
+        $file = 'Task_Data.txt';
+
+        if(isset($_POST['#saveTask']))
+        {
+          $fh = fopen($file, "a+");
+          $string =  $_POST['#InputTaskName'] . '+' . $_POST['#InputTaskDescription'];
+          fwrite($fh, $string); //Write html input into Task_Data.txt
+          fclose($fh); // Close Task_Data.txt
         }
     }
+
     public function Delete()
     {
         //Assignment: Code to delete task here
-        $file = fopen("Task_Data.txt", "a") or exit("Unable to open file");
-        $t="";
-
-        while(!feof($file))
-        {
-          $k= fgets($file);
-          if ( (preg_match($TaskId, $k)) || ($TaskName, $k)) || (preg_match($TaskDescription, $k)) )
-          {
-
-          }
-          else
-          {
-            $t=$t.$k;
-          }
-          fclose($file);
-          $file = fopen("Task_Data.txt", "a") or exit("Unable to open file!");
-          fwrite($file,$t);
-          fclose($file);
-        }
-  }
+        
+    }
+}
 ?>

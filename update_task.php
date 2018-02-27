@@ -4,12 +4,17 @@
  */
 require('Task.class.php');
 // Assignment: Implement this script
-$fn = "Task_Data.txt";
-$file = fopen($fn, "a+");
-$TaskId = $_POST['TaskId'];
-$taskName  = $_POST['TaskName'];
-$taskDescription  = $_POST['TaskDescription'];
+$task = new Task();
+$task->$TaskId = getUniqueId();
+$task->$TaskName = $_POST['InputTaskName'];
+$task->$TaskDescription = $_POST['InputTaskDescription'];
 
-if($_POST['#saveTask']) fwrite($file, $_POST['#saveTask']);
-fclose($file);
+if ($('#saveTask').click(function())
+{
+  $task->Save();
+}
+if($('#deleteTask').click(function())
+{
+  $task->Delete();
+}
 ?>
